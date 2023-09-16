@@ -25,6 +25,19 @@ pub enum Bearing {
 }
 
 impl Bearing {
+    pub fn all_bearings() -> [Self; 8] {
+        [
+            Self::Up,
+            Self::Down,
+            Self::Left,
+            Self::Right,
+            Self::UpLeft,
+            Self::UpRight,
+            Self::DownLeft,
+            Self::DownRight,
+        ]
+    }
+
     pub fn to_coords(&self) -> Coords {
         match self {
             Self::Up => UP,

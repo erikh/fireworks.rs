@@ -8,3 +8,5 @@ edition = "2021"
 [dependencies]
 crossterm = "*"
 rand = "*"
+lazy_static = "*"
+signal-hook = "*"

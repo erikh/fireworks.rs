@@ -3,7 +3,7 @@ use crossterm::style::Color;
 const EXPLOSION_CHARS: &[char] = &['*', '\'', '.', '`', '#', '^', '@', '$', ' '];
 const RISING_CHARS: &[char] = &['|', '^', '.', ',', '*', '$', ')', '(', '\\', '/', ' '];
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Eq)]
 pub struct Cell {
     character: char,
     color: Color,
@@ -18,7 +18,21 @@ impl Default for Cell {
     }
 }
 
+impl PartialEq for Cell {
+    fn eq(&self, other: &Self) -> bool {
+        self.character == other.character && self.color == other.color
+    }
+}
+
 impl Cell {
+    pub fn color(&self) -> Color {
+        self.color
+    }
+
+    pub fn character(&self) -> char {
+        self.character
+    }
+
     pub fn set_empty(&mut self) {
         self.character = ' ';
     }

@@ -2,12 +2,12 @@ use crate::screen::Grid;
 
 // logo represent
 pub trait Turtle {
-    fn update(&mut self);
-    fn draw(&mut self, screen: &mut Grid);
+    fn update(&mut self, grid: &mut Grid);
+    fn draw(&mut self, grid: &mut Grid);
 
-    fn tick(&mut self, screen: &mut Grid) {
-        self.draw(screen);
-        self.update();
+    fn tick(&mut self, grid: &mut Grid) {
+        self.draw(grid);
+        self.update(grid);
     }
 
     fn finished(&self) -> bool {

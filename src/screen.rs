@@ -1,16 +1,22 @@
-use crate::{cell::Cell, turtle::Turtle};
-use std::{cell::RefCell, rc::Rc};
+use crate::{cell::Cell, firework::Firework, turtle::Turtle};
+use crossterm::{
+    cursor::MoveTo,
+    style::{Print, SetForegroundColor},
+    ExecutableCommand,
+};
+use std::{cell::RefCell, io::stdout, rc::Rc};
 
 pub type Grid = Vec<Vec<Cell>>;
 
-type RcTurtle<'a> = Rc<RefCell<&'a mut dyn Turtle>>;
+pub type RcTurtle = Rc<RefCell<Firework>>;
 
-pub struct Screen<'a> {
-    turtles: Vec<RcTurtle<'a>>,
+pub struct Screen {
+    turtles: Vec<RcTurtle>,
     grid: Grid,
+    last_draw_grid: Option<Grid>,
 }
 
-impl<'a> Screen<'a> {
+impl Screen {
     pub fn new(lines: usize, cols: usize) -> Self {
         let mut grid = Vec::new();
         for _ in 0..lines {
@@ -21,13 +27,38 @@ impl<'a> Screen<'a> {
             grid.push(inner);
         }
 
+        let mut turtles = Vec::new();
+        for _ in 0..10 {
+            turtles.push(Rc::new(RefCell::new(Firework::new(lines, cols))));
+        }
+
         Self {
             grid,
-            turtles: Vec::new(),
+            turtles,
+            last_draw_grid: None,
         }
     }
 
-    pub fn add_turtle(&mut self, turtle: RcTurtle<'a>) {
+    pub fn draw(&mut self) -> std::io::Result<()> {
+        let new_grid = self.grid.clone();
+        let last_draw_grid = self.last_draw_grid.clone().unwrap_or_default();
+        let is_last_draw_grid = self.last_draw_grid.is_some();
+        for y in 0..self.grid.len() {
+            for x in 0..self.grid[y].len() {
+                if !is_last_draw_grid || self.grid[y][x] != last_draw_grid[y][x] {
+                    stdout()
+                        .execute(MoveTo(x as u16, y as u16))?
+                        .execute(SetForegroundColor(self.grid[y][x].color()))?
+                        .execute(Print(&format!("{}", self.grid[y][x].character())))?;
+                }
+            }
+        }
+        self.last_draw_grid = Some(new_grid);
+
+        Ok(())
+    }
+
+    pub fn add_turtle(&mut self, turtle: RcTurtle) {
         self.turtles.push(turtle);
     }
 
