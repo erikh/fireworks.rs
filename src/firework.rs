@@ -150,14 +150,16 @@ impl Firework {
         let mut embers = Vec::new();
 
         for bearing in Bearing::all_bearings() {
-            embers.push(Direction::new(
-                self.base_x.try_into().unwrap(),
-                (self.lines - self.trail).try_into().unwrap(),
-                bearing,
-                (rand::random::<i32>() % 10).abs() + 1,
-                true,
-                self.colors.clone(),
-            ))
+            if self.trail < self.lines {
+                embers.push(Direction::new(
+                    self.base_x.try_into().unwrap(),
+                    (self.lines - self.trail).try_into().unwrap(),
+                    bearing,
+                    (rand::random::<i32>() % 10).abs() + 1,
+                    true,
+                    self.colors.clone(),
+                ))
+            }
         }
 
         self.embers = embers
