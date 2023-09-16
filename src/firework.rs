@@ -150,7 +150,7 @@ impl Firework {
         let mut embers = Vec::new();
 
         for bearing in Bearing::all_bearings() {
-            if self.trail < self.lines {
+            if self.trail <= self.lines {
                 embers.push(Direction::new(
                     self.base_x.try_into().unwrap(),
                     (self.lines - self.trail).try_into().unwrap(),
