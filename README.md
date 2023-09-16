@@ -17,6 +17,18 @@ binary when you `cargo install` it. This conflicts with the
 the same thing, just done by someone else, hah. Enjoy the weird terminal
 screensavers I guess.
 
+This is a TUI "screen saver" that displays fireworks on the terminal. It will
+display them until Ctrl+C is pressed and is designed to work with `tmux`, etc,
+to provide some bling on your terminal when you only need half of it.
+
+Some notes:
+
+10 fireworks are launched at start, and every 5 iterations (about half a
+second) a new one is launched. Fireworks trail north and have a chance of
+exploding on every frame. Each flare and explosion have random components to
+the trail and characters used. If the terminal is resized, it clears and
+rebuilds the scene anew.
+
 ## Author
 
 Erik Hollensbe <git@hollensbe.org>
