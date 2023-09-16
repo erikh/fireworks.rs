@@ -52,6 +52,7 @@ fn main() -> std::io::Result<()> {
         if winch.load(Ordering::Relaxed) {
             s = size()?;
             screen = Screen::new(s.1.into(), s.0.into());
+            stdout().execute(Clear(ClearType::All))?;
             winch.store(false, Ordering::Relaxed);
         }
         screen.draw()?;
